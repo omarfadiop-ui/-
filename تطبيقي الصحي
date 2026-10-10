@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق جدولي الصحي والوجبات</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .custom-checkbox:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-10">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white pt-8 pb-6 px-4 shadow-lg rounded-b-3xl">
+        <div class="max-w-md mx-auto text-center">
+            <h1 class="text-2xl font-extrabold tracking-wide mb-1">🌱 جَدوَلِي الصِّحِّي</h1>
+            <p class="text-emerald-100 text-xs font-medium">مساعدك اليومي لللياقة والوجبات المتوازنة</p>
+            
+            <!-- Tab Navigation Buttons -->
+            <div class="flex bg-emerald-800/50 p-1.5 rounded-2xl mt-6 backdrop-blur-md border border-emerald-500/30">
+                <button id="btn-routine" onclick="switchTab('routine')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 bg-white text-emerald-800 shadow-md">
+                    ⏱️ الجدول اليومي
+                </button>
+                <button id="btn-meals" onclick="switchTab('meals')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 text-emerald-100 hover:text-white">
+                    🍳 الوجبات والتحضير
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto px-4 mt-6">
+
+        <!-- TAB 1: ROUTINE PAGE -->
+        <div id="tab-routine" class="space-y-4">
+            
+            <!-- Progress Box -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold text-slate-500">إنجاز اليوم</span>
+                    <span id="progress-text" class="text-sm font-extrabold text-emerald-600">0%</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200/60">
+                    <div id="progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full transition-all duration-300 w-0"></div>
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                <h2 class="text-base font-bold text-slate-700 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
+                    <span>📋</span> مهامك اليومية
+                </h2>
+                <div id="task-list" class="space-y-3">
+                    <!-- Tasks inserted dynamically -->
+                </div>
+            </div>
+
+            <button onclick="resetTasks()" class="w-full py-2.5 text-xs text-slate-400 hover:text-rose-500 font-semibold transition-colors text-center">
+                إعادة ضبط جدول اليوم 🔄
+            </button>
+        </div>
+
+        <!-- TAB 2: MEALS PAGE -->
+        <div id="tab-meals" class="space-y-4 hidden">
+            
+            <div class="bg-amber-50 border border-amber-200/60 rounded-2xl p-4 text-amber-800 text-xs leading-relaxed">
+                💡 <b>ملاحظة مدربك:</b> ركز على البروتين الخفيف والشرب المستمر للماء طوال اليوم لتبني عضلات صحية أثناء المشي!
+            </div>
+
+            <!-- Meal Cards -->
+            <div class="space-y-3">
+                <!-- Breakfast -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm mb-2">
+                        <span class="bg-emerald-50 p-1.5 rounded-lg">☀️</span>
+                        <span>1. وجبة الإفطار (10:30 صباحاً)</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p class="font-semibold text-slate-700">• الوجبة:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">بيضتان مسلوقتان + خبز أسمر (بر) + خيار وطماطم + كأس حليب دافئ (أو شوفان بالحليب والموز).</p>
+                        <p class="font-semibold text-slate-700">• طريقة التحضير:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">اسلق البيض في ماء مغلي لمدة 8-10 دقائق، أو سخّن الحليب وأضف إليه 3 ملاعق شوفان مع رشة عسل.</p>
+                    </div>
+                </div>
+
+                <!-- School Snack -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm mb-2">
+                        <span class="bg-emerald-50 p-1.5 rounded-lg">🏫</span>
+                        <span>2. سناك المدرسة (03:30 عصراً)</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p class="font-semibold text-slate-700">• الوجبة:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">تفاحة أو موزة + حفنة صغيرة من اللوز/الجوز غير المملح (أو ساندويتش جبنة بيضاء خفيفة).</p>
+                        <p class="font-semibold text-slate-700">• طريقة التحضير:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">جهّز الفاكهة والمكسرات في حافظة صغيرة قبل الذهاب إلى المدرسة لتتناولها في الفسحة.</p>
+                    </div>
+                </div>
+
+                <!-- Lunch -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm mb-2">
+                        <span class="bg-emerald-50 p-1.5 rounded-lg">🍗</span>
+                        <span>3. وجبة الغداء (07:00 مساءً)</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p class="font-semibold text-slate-700">• الوجبة:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">صدر دجاج مشوي أو مسلوق (أو سمك فيليه/تونة) + 5-6 ملاعق أرز + طبق سلطة خضراء مع ليمون.</p>
+                        <p class="font-semibold text-slate-700">• طريقة التحضير:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">تُبّل الدجاج بقليل من الملح والبهارات وقطرات زيت زيتون واشوه في المقلاة الهوائية أو الفرن لمدة 15-20 دقيقة.</p>
+                    </div>
+                </div>
+
+                <!-- Dinner -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm mb-2">
+                        <span class="bg-emerald-50 p-1.5 rounded-lg">🌙</span>
+                        <span>4. وجبة العشاء (10:00 مساءً)</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p class="font-semibold text-slate-700">• الوجبة:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">علبة زبادي قليل الدسم + خيار مقطع ورشة نعناع (أو ساندويتش لبنة خفيفة بالخبز الأسمر).</p>
+                        <p class="font-semibold text-slate-700">• طريقة التحضير:</p>
+                        <p class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">وجبة خفيفة ومريحة للمعدة قبل النوم لا تتطلب سوى تقطيع الخيار وخلطه مع الزبادي.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const tasks = [
+            { id: 1, time: "10:30 ص", text: "الاستيقاظ، شرب ماء، وتناول الإفطار الصحي" },
+            { id: 2, time: "12:30 ظ", text: "الذهاب للمدرسة (خذ معك زمزمية الماء)" },
+            { id: 3, time: "03:30 م", text: "تناول السناك المدرسي الصحي" },
+            { id: 4, time: "07:00 م", text: "الرجوع من المدرسة + تناول وجبة الغداء" },
+            { id: 5, time: "08:30 م", text: "رياضة المشي لمدة 30 دقيقة بخطوة نشطة" },
+            { id: 6, time: "09:30 م", text: "تمارين منزلية لتقوية الصدر والبطن (أيام التمارين)" },
+            { id: 7, time: "10:00 م", text: "تناول وجبة العشاء الخفيفة" },
+            { id: 8, time: "11:00 م", text: "الاستعداد للنوم المبكر (8-9 ساعات)" }
+        ];
+
+        function switchTab(tab) {
+            const btnRoutine = document.getElementById('btn-routine');
+            const btnMeals = document.getElementById('btn-meals');
+            const tabRoutine = document.getElementById('tab-routine');
+            const tabMeals = document.getElementById('tab-meals');
+
+            if (tab === 'routine') {
+                tabRoutine.classList.remove('hidden');
+                tabMeals.classList.add('hidden');
+                
+                btnRoutine.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 bg-white text-emerald-800 shadow-md";
+                btnMeals.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 text-emerald-100 hover:text-white";
+            } else {
+                tabRoutine.classList.add('hidden');
+                tabMeals.classList.remove('hidden');
+
+                btnMeals.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 bg-white text-emerald-800 shadow-md";
+                btnRoutine.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 text-emerald-100 hover:text-white";
+            }
+        }
+
+        function renderTasks() {
+            const listContainer = document.getElementById('task-list');
+            listContainer.innerHTML = '';
+            
+            let completedCount = 0;
+            const savedState = JSON.parse(localStorage.getItem('healthyAppTabState') || '{}');
+
+            tasks.forEach(task => {
+                const isChecked = savedState[task.id] || false;
+                if (isChecked) completedCount++;
+
+                const item = document.createElement('label');
+                item.className = `flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                    isChecked ? 'bg-emerald-50/60 border-emerald-200 text-slate-400 line-through' : 'bg-slate-50 border-slate-200/80 text-slate-700 hover:bg-slate-100/80'
+                }`;
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTask(${task.id})" class="w-5 h-5 rounded-md border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                        <span class="text-xs font-bold">${task.text}</span>
+                    </div>
+                    <span class="text-[10px] font-semibold bg-white px-2 py-1 rounded-md border border-slate-200 text-amber-600 shrink-0 mr-2">${task.time}</span>
+                `;
+                listContainer.appendChild(item);
+            });
+
+            const percent = Math.round((completedCount / tasks.length) * 100);
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-text').innerText = `${percent}%`;
+        }
+
+        function toggleTask(id) {
+            const savedState = JSON.parse(localStorage.getItem('healthyAppTabState') || '{}');
+            savedState[id] = !savedState[id];
+            localStorage.setItem('healthyAppTabState', JSON.stringify(savedState));
+            renderTasks();
+        }
+
+        function resetTasks() {
+            if (confirm('هل تريد إعادة ضبط جميع المهام ليوم جديد؟')) {
+                localStorage.removeItem('healthyAppTabState');
+                renderTasks();
+            }
+        }
+
+        // Initial Render
+        renderTasks();
+    </script>
+</body>
+</html>
